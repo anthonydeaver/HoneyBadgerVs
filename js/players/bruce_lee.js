@@ -1,8 +1,7 @@
-//Chuck Norris
+//Bruce Lee
 
-function loadChuck()  {
-    return {
-        'name' : 'Chuck Norris',
+    bruceLee =  {
+        'name' : 'Bruce Lee',
         'strength' : 7,
         'dexterity' : 9,
         'intutition' : 8,
@@ -14,7 +13,6 @@ function loadChuck()  {
         'initiative' : 9,
         'ability' : 10,
         'hitPoints' : 80,
-        'image' : '',
         
         //
         'attacks' : [
@@ -22,5 +20,4 @@ function loadChuck()  {
             {'name' : 'rear strike', 'damage'  : 7},
         ]
     };
-}
 

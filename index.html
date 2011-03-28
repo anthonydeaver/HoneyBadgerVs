@@ -3,15 +3,9 @@
     <head>
     </head>
     <body>
-    <script>
-        require({ priority: ['jquery']});
-
-        //Load scripts.
-        require(['jquery',
-                'players/norris'
-                ], function() {
-        });
-
-    </script>
+        <div id="monitor" style="height: 500px; width: 500px; clip: rect(500px 125px 125px 500px); overflow: auto;"></div>
+        <button id="load">Choose...</button>
     </body>
+    <script src="js/jquery.js"></script>
+    <script data-main="js/main" src="js/require.js">alert('no');</script>
 </html>
