@@ -6,18 +6,29 @@ var play = true;
 var myInterval = 0;
 
 var playerSheets = [
-        'norris',
-        'bruce_lee',
-        ];
+    'spiderman',
+    'norris',
+    'bruce_lee',
+];
         
 
-$('#load').bind('click', setChallenger);
 
 
 //Load player scripts.
 require({baseUrl: "js/players"});
-require(playerSheets, setupGame);
+require(playerSheets, init);
         
+function init() {
+    $('#load').bind('click', setChallenger);
+    $('#stop').bind('click', stopFight);
+    setupGame();
+}                   
+
+function stopFight() {
+    clearInterval ( myInterval );
+    play = false;
+}
+   
 function setupGame() {
 
 /*var characters = {
@@ -53,11 +64,26 @@ function setupGame() {
 }        
   
 function setChallenger() {
-    challenger = loadChuck();
+    var func = $("select#opponents option:selected").attr('func');
+    //alert(func);
+    switch(func) {
+        case 'chuckNorris':
+            challenger = loadChuck();
+            break;
+        case 'spiderman':
+            challenger = loadSpider();
+            break;
+        case 'bruceLee':
+            challenger = loadBruce();
+            break;
+    }            
+    $('#monitor').html('');
     fight();
 }         
      
 function fight(){
+$('#monitor').html('');
+    play = true;
     clearInterval ( myInterval );
     //roll for inititive
     p1 = (Math.floor(Math.random()*21) * badger.initiative);
@@ -107,5 +133,4 @@ function endGame(player) {
     var msg = '<span style="color: red;">' + player + ' has lost!</span><br/>';
     $('#monitor').append(msg);
 }
-               
 

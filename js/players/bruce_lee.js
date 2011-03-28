@@ -1,6 +1,7 @@
-//Bruce Lee
+//Chuck Norris
 
-    bruceLee =  {
+function loadBruce()  {
+    return {
         'name' : 'Bruce Lee',
         'strength' : 7,
         'dexterity' : 9,
@@ -20,4 +21,5 @@
             {'name' : 'rear strike', 'damage'  : 7},
         ]
     };
+}
 

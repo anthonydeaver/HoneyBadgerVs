@@ -3,9 +3,30 @@
     <head>
     </head>
     <body>
+        <select id="opponents">
+            <option>Choose opponent</option>
+            <option func="chuckNorris">Chuck Norris</option>
+            <option func="spiderman">Spider-Man</option>
+            <option func="bruceLee">Bruce Lee</option>
+        </select>
+        <br />
+        <button id="load">Fight!</button>
+        <button id="stop">Stop the fight!</button>
+        <div>
+            <span style="display: block; float: left; text-align: center;">
+                <span><img width="350" height="282" src="images/honey_badger.jpg" /></span><br />
+                <span>Honey Badger</span>
+            </span>
+            <span style="display: block; float: left; text-align: center;">
+                <span>VS.</span>
+            </span>
+            <span style="display: block; float: left; text-align: center;">
+                <span><img id="challenger_image" width="350" height="282" src="images/question_mark.png" /></span><br />
+                <span id="challenger_name">?</span>
+            </span>
+        </div>
         <div id="monitor" style="height: 500px; width: 500px; clip: rect(500px 125px 125px 500px); overflow: auto;"></div>
-        <button id="load">Choose...</button>
     </body>
     <script src="js/jquery.js"></script>
-    <script data-main="js/main" src="js/require.js">alert('no');</script>
+    <script data-main="js/main" src="js/require.js"></script>
 </html>

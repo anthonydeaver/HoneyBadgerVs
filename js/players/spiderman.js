@@ -1,6 +1,7 @@
-//Spider-Man
+//Chuck Norris
 
-    spiderman = {
+function loadSpider()  {
+    return {
         'name' : 'Spider-Man',
         'strength' : 18,
         'dexterity' : 20,
@@ -15,6 +16,10 @@
         'hitPoints' : 150,
         
         //
-        'attacks' : ['front strike','rear strike','left jab','right jab']
+        'attacks' : [
+            {'name' : 'front strike', 'damage' : 5},
+            {'name' : 'rear strike', 'damage'  : 7},
+        ]
     };
+}
 
