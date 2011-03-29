@@ -70,7 +70,7 @@ function setChallenger() {
 function prepBout() { 
 	$( "#playerTemplate" ).template( "challengerTemplate" );
 	$.tmpl( "challengerTemplate", gameVars.challenger ).insertAfter( "#badger" );
-	$('<div/>',{class: "clear"}).appendTo('#fightCard');
+	$('<div class="clear" />').appendTo('#fightCard');
     $('#monitor').html('');
 	$.colorbox({inline: true, href:'#lightbox',onClosed:clearFightCard});
     gameVars.play = true;
