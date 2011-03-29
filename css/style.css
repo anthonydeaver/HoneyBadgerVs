@@ -90,12 +90,23 @@ a:hover { color: #036; }
 body {
 	background-color: #454545;
 }
+h1 {
+    font-size: 24px;
+}
 #main {
 	width: 800px;
 	text-align: center;
 	background-color: white;
 	margin: 0 auto;
+	height: 800px;
+	padding: 25px;
 }
+
+#main p, #main h1 {
+    text-align: left;
+    padding: 10px;
+}
+
 #banner {
 	width: 750px;
 	margin: 0 auto;
@@ -108,7 +119,12 @@ body {
 .placard {
 	text-align: left;
 	border: 2px solid black;
+	width: 250px;
 }
+.placard li { list-style: none; text-align: left; }
+.placard li.warn { background-color: orange;}
+.placard li.alert { background-color: red;}
+
 #monitor {
 	height: 500px; 
 	width: 500px; 
@@ -116,9 +132,16 @@ body {
 	overflow: auto;
 }
 
+.playerName {
+    font-weight: bold;
+}
 .clear {
 	clear: both;
 }
+
+#lightbox div.footer {
+    height: 50px;
+}   
 
 
 

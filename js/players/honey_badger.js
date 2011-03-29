@@ -1,6 +1,7 @@
 //Chuck Norris
 
 function HoneyBadger()  {
+    var baseHP = 65;
     return {
         'name' : 'Honey Badger',
 		'shortName' : 'badger',
@@ -34,6 +35,15 @@ function HoneyBadger()  {
             {'name' : 'Channel Lock', 'damage'  : 7},
             {'name' : 'Ryu-Ken Defense', 'damage'  : 7},
         ],
+        
+        reset : function() {
+            //alert("HP: " + baseHP);
+            this.hitPoints = baseHP;
+        },
+        
+        getBaseHP : function() {
+            return baseHP;
+        }
     };
 }
 

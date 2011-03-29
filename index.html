@@ -16,18 +16,18 @@
 		<link media="screen" rel="stylesheet" href="css/colorbox.css" />
 		
 		<script id="playerTemplate" type="text/x-jquery-tmpl">
-			<div class="placard ${type}">
+			<div class="placard" id="${type}">
 				<span class="icon">
 					<img src="images/${image}" width="100" height="100"/>
 				</span>
 				<span class="stats">
 					<ul>
-					<li>Name:${name}</li>
+					<li class="playerName">${name}</li>
 					<li>Strength:${strength}</li>
 					<li>Dexterity: ${dexterity}</li>
 					<li>Intutition: ${intutition}</li>
-					<li>Ability${ability}</li>
-					<li class="hitpoints">Hit Points:${hitPoints}</li>
+					<li>Ability: ${ability}</li>
+					<li class="hitpoints">Hit Points: ${hitPoints}</li>
 					</ul>
 				</span>
 			</div>
@@ -35,15 +35,15 @@
     </head>
     <body>
 		<div id="main">
-	        <select id="opponents">
-	            <option>Choose opponent</option>
-	            <option func="chuckNorris">Chuck Norris</option>
-	            <option func="spiderman">Spider-Man</option>
-	            <option func="bruceLee">Bruce Lee</option>
-	        </select>
-	        <br />
-	        <button id="load">Fight!</button>
-	        <button id="stop">Stop the fight!</button>
+		    <span>
+		        <h1>Honey Badger vs.</h1>
+		        <p>
+		            Challenge Honey Badger to a fight!  Or better yet, have someone else challenge him!  You can pit the most fearless animal on the planet again some of the toughest fighters around.  Or just waste some time
+		        </p>
+		        <p>
+		            Just select an opponet for Honey Badger below (yes, there are currently only 3), hit Fight! and let the good times role!
+		        </p>
+		    </span>
 	        <div id="banner">
 	            <span class="promo">
 	                <span><img width="350" height="282" src="images/honey_badger.jpg" /></span><br />
@@ -59,14 +59,26 @@
 	            </span>
 				<div class="clear"></div>
 	        </div>
+	        <select id="opponents">
+	            <option>Choose opponent</option>
+	            <option func="chuckNorris">Chuck Norris</option>
+	            <option func="spiderman">Spider-Man</option>
+	            <option func="bruceLee">Bruce Lee</option>
+	        </select>
+	        <button id="load">Fight!</button>
 		</div>
 		<div style="display: none;">
 			<div id="lightbox">
 				<div id="fightCard">
 				</div>
 	        	<div id="monitor"></div>
+	        	<div class="footer">
+	        	    <button id="rematch">Rematch!</button>
+	        	</div>
 			</div>
 		</div>
+		<div id="hb_win"></div>
+		<div id="hb_lose"></div>
     </body>
     <script src="js/jquery.js"></script>
 	<script src="js/jquery.tmpl.js"></script>

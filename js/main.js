@@ -1,11 +1,12 @@
-var descriptor ;
-var badger;
-var challenger;
-var characters;
-var play = true;
-var myInterval = 0;
+var gameVars = {};
+gameVars.descriptor;
+gameVars.badger;
+gameVars.challenger;
+gameVars.characters;
+gameVars.play = true;
+gameVars.myInterval = 0;
 
-var playerSheets = [
+gameVars.playerSheets = [
 	'honey_badger', 
     'spiderman',
     'norris',
@@ -16,24 +17,27 @@ var playerSheets = [
 
 //Load player scripts.
 require({baseUrl: "js/players"});
-require(playerSheets, init);
+require(gameVars.playerSheets, init);
         
 function init() {
-    $('#load').bind('click', setChallenger);
+    $('#load').bind('click', prepBout);
     $('#stop').bind('click', stopFight);
+    $('#rematch').bind('click', rematch);
+    $('#rematch').hide();
+    $('#opponents').change(setChallenger);
     setupGame();
 }                   
 
 function stopFight() {
-    clearInterval ( myInterval );
-    play = false;
+    clearInterval ( gameVars.myInterval );
+    gameVars.play = false;
 }
    
 function setupGame() {
 
-	badger = new HoneyBadger();
+	gameVars.badger = new HoneyBadger();
 	$( "#playerTemplate" ).template( "badgerTemplate" );
-	$.tmpl( "badgerTemplate", badger ).appendTo( "#fightCard" );
+	$.tmpl( "badgerTemplate", gameVars.badger ).appendTo( "#fightCard" );
 
 /*var characters = {
     'norris' : chuckNorris,
@@ -49,39 +53,67 @@ function setChallenger() {
     //alert(func);
     switch(func) {
         case 'chuckNorris':
-            challenger = chuckNorris();
+            gameVars.challenger = chuckNorris();
             break;
         case 'spiderman':
-            challenger = spiderman();
+            gameVars.challenger = spiderman();
             break;
         case 'bruceLee':
-            challenger = bruceLee();
+            gameVars.challenger = bruceLee();
             break;
-    }            
+    }       
+    
+    $('#challenger_image').attr('src', 'images/' + gameVars.challenger.image); 
+    $('#challenger_name').html(gameVars.challenger.name); 
+}
+
+function prepBout() { 
 	$( "#playerTemplate" ).template( "challengerTemplate" );
-	$.tmpl( "challengerTemplate", challenger ).appendTo( "#fightCard" );
+	$.tmpl( "challengerTemplate", gameVars.challenger ).insertAfter( "#badger" );
 	$('<div/>',{class: "clear"}).appendTo('#fightCard');
     $('#monitor').html('');
-	$.colorbox({inline: true, href:'#lightbox',onClosed:stopFight});
-    play = true;
+	$.colorbox({inline: true, href:'#lightbox',onClosed:clearFightCard});
+    gameVars.play = true;
     fight();
 }         
-     
+
+function rematch() {
+    resetBout();
+    fight();
+}     
+
+function clearFightCard() {
+    $('#fightCard #player').remove();
+    resetBout();
+}
+
+function resetBout() {
+    gameVars.badger.reset();
+    gameVars.challenger.reset();
+    $("#badger li.hitpoints").removeClass("warn alert");
+    $("#player li.hitpoints").removeClass("warn alert");
+    $("#badger li.hitpoints").html("Hit Points: " + gameVars.badger.hitPoints);
+    $("#player li.hitpoints").html("Hit Points: " + gameVars.challenger.hitPoints);
+    $('#rematch').hide();
+    $('#monitor').html('');
+    gameVars.play = true; 
+}
 function fight(){
-    clearInterval ( myInterval );
+    // Housekeeping
+    clearInterval ( gameVars.myInterval );
 
     //roll for inititive
-    var p1 = (Math.floor(Math.random()*21) * badger.initiative);  // Badger!
-    var p2 = (Math.floor(Math.random()*21) * badger.initiative);  // Challenger!
+    var p1 = (Math.floor(Math.random()*21) * gameVars.badger.initiative);  // Badger!
+    var p2 = (Math.floor(Math.random()*21) * gameVars.challenger.initiative);  // Challenger!
         
     if(p1 > p2) {
         // p1 goes first, choose an attack
-        startAttack(badger,challenger,p1);
+        startAttack(gameVars.badger,gameVars.challenger,p1);
     } else {
         // p2 goes first, choose an attack
-        startAttack(challenger,badger,p2);
+        startAttack(gameVars.challenger,gameVars.badger,p2);
     }
-    if (play) myInterval = setTimeout ( fight, 1000 );
+    if (gameVars.play) gameVars.myInterval = setTimeout ( fight, 500 );
 }
           
 function startAttack(p1,p2,inititiveRoll) {
@@ -90,23 +122,29 @@ function startAttack(p1,p2,inititiveRoll) {
     showAction({'player' : p1, "attack" : " attacks with " + p1.attacks[atkVal].name});
 
 	// Player without initiave gets a chance to block/dodge
-    var miss = (Math.floor(Math.random()*21) * p2.dexterity);
+    var miss = (Math.floor(Math.random()*21) * (p2.dexterity + p2.intutition));
     if(miss > inititiveRoll) { 
 		// 50/50 change of block vs dodge
-		var dodge = (Math.floor(Math.random()*51));
+		var dodge = (Math.floor(Math.random()*101));
+		console.log("dodge: " + dodge);
 		if(dodge > 50 ) {
 			// DODGE!
 	        showAction({'player' : p2, "attack" : ' dodges!'});
 		} else {
 			// BLOCK!
 			var blockVal = Math.floor(Math.random() * p1.blocks.length);
-        	showAction({'player' : p2, "attack" : " blocks with " + p1.blocks[blockVal].name});
+        	showAction({'player' : p2, "attack" : " blocks with " + p2.blocks[blockVal].name});
 		}
     } else {
         dmg = (Math.floor(Math.random()*7) * p1.attacks[atkVal].damage);
         p2.hitPoints -= dmg;
+        if(p2.hitPoints < 0 ) { p2.hitPoints = 0; }
         showDamage({'player' : p2, "damage" : dmg});
-        if(p2.hitPoints <= 0) { play = false; endGame(p2.name); }
+        $("#" + p2.type + " li.hitpoints").html("Hit Points: " + p2.hitPoints);
+        //alert(p2.hitPoints + " :: " + (p2.getBaseHP() * .10));
+        if (p2.hitPoints < (p2.getBaseHP() * .25)) {$("#" + p2.type + " li.hitpoints").removeClass("warn alert").addClass("warn");}
+        if (p2.hitPoints < (p2.getBaseHP() * .10)) {$("#" + p2.type + " li.hitpoints").removeClass("warn alert").addClass("alert");}
+        if(p2.hitPoints <= 0) { endGame(p2.name); }
     }
 }         
 function showAction(attacker) {
@@ -115,7 +153,7 @@ function showAction(attacker) {
 	resetScroll();
 }
 function showDamage(attackee) {
-    var msg = '<span>' + attackee.player.name + " had taken " + attackee.damage + ' points of damage! (' + attackee.player.hitPoints + ')</span><br/>';
+    var msg = '<span>' + attackee.player.name + " had taken " + attackee.damage + ' points of damage!</span><br/>';
     $('#monitor').append(msg);
 	resetScroll();
 }
@@ -124,6 +162,9 @@ function endGame(player) {
     var msg = '<span style="color: red;">' + player + ' has lost!</span><br/>';
     $('#monitor').append(msg);
 	resetScroll();
+	$('#rematch').show();
+	clearInterval ( gameVars.myInterval );
+	gameVars.play = false; 
 }
 
 function resetScroll() {

@@ -1,28 +1,28 @@
-//Spider-Man
+//Optimus Prime
 
-function spiderman()  {
-    var baseHP = 150;
+function optimusPrime()  {
+    var baseHP = 500;
     return {
-        'name' : 'Spider-Man',
-		'shortName' : 'spiderman',
-        'strength' : 18,
+        'name' : 'Optimus Prime',
+		'shortName' : 'optimusPrime',
+        'strength' : 30,
         'dexterity' : 20,
         'intutition' : 20,
         'constitution' : 18,
-        'wisdom' : 9,
+        'wisdom' : 18,
         'charisma' : 10,
         
         //
         'initiative' : 10,
         'ability' : 50,
-        'hitPoints' : 150,
+        'hitPoints' : baseHP,
 		'image' : 'spider-man.jpeg',
 		'type' : 'player',
         
         //
         'attacks' : [
-            {'name' : 'Web Punch', 'damage' : 9},
-            {'name' : 'Striking Spider', 'damage'  : 7},
+            {'name' : 'Web Punch', 'damage' : 15},
+            {'name' : 'Striking Spider', 'damage'  : },
             {'name' : 'Crouching Spider', 'damage'  : 7},
             {'name' : 'Spider Fang', 'damage'  : 7},
             {'name' : 'Ferocious Spider', 'damage'  : 7},

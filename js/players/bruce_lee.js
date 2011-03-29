@@ -1,6 +1,7 @@
-//Chuck Norris
+//Bruce Lee
 
 function bruceLee()  {
+    var baseHP = 80;
     return {
         'name' : 'Bruce Lee',
 		'shortName' : 'bruceLee',
@@ -32,7 +33,16 @@ function bruceLee()  {
             {'name' : 'Devils Chain', 'damage'  : 0},
             {'name' : 'Twisting Wind', 'damage'  : 0},
             {'name' : 'Parting Clouds', 'damage'  : 0},
-        ]
+        ],
+        
+        reset : function() {
+            //alert("HP: " + this.hitPoints);
+            this.hitPoints = baseHP;
+        },
+        
+        getBaseHP : function() {
+            return baseHP;
+        }
     };
 }
 
