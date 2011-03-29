@@ -1,6 +1,6 @@
 //Chuck Norris
 
-function loadSpider()  {
+function spiderman()  {
     return {
         'name' : 'Spider-Man',
         'strength' : 18,
@@ -14,6 +14,7 @@ function loadSpider()  {
         'initiative' : 10,
         'ability' : 50,
         'hitPoints' : 150,
+		'image' : 'spider-man.jpeg',
         
         //
         'attacks' : [

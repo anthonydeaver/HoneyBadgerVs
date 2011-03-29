@@ -1,4 +1,4 @@
-var descriptor;
+var descriptor ;
 var badger;
 var challenger;
 var characters;
@@ -6,12 +6,12 @@ var play = true;
 var myInterval = 0;
 
 var playerSheets = [
+	'honey_badger', 
     'spiderman',
     'norris',
     'bruce_lee',
 ];
         
-
 
 
 //Load player scripts.
@@ -31,34 +31,15 @@ function stopFight() {
    
 function setupGame() {
 
+	badger = new HoneyBadger();
+	$( "#playerTemplate" ).template( "badgerTemplate" );
+	$.tmpl( "badgerTemplate", badger ).appendTo( "#fightCard" );
+
 /*var characters = {
     'norris' : chuckNorris,
     'bruce_lee' : bruceLee,
-    };*/
-
-    descriptor = ' performs a ';
-
-    badger = {
-        'name' : 'Honey Badger',
-        'strength' : 7,
-        'dexterity' : 9,
-        'intutition' : 8,
-        'constitution' : 7,
-        'wisdom' : 9,
-        'charisma' : 5,
-        
-        //
-        'initiative' : 6,
-        'ability' : 10,
-        'hitPoints' : 65,
-        'color' : 'blue',
-        
-        //
-        'attacks' : [
-            {'name' : 'front strike', 'damage' : 5},
-            {'name' : 'rear strike', 'damage'  : 7},
-        ]
     };
+*/
 
     //var challenger = ;
 }        
@@ -68,69 +49,89 @@ function setChallenger() {
     //alert(func);
     switch(func) {
         case 'chuckNorris':
-            challenger = loadChuck();
+            challenger = chuckNorris();
             break;
         case 'spiderman':
-            challenger = loadSpider();
+            challenger = spiderman();
             break;
         case 'bruceLee':
-            challenger = loadBruce();
+            challenger = bruceLee();
             break;
     }            
+	$( "#playerTemplate" ).template( "challengerTemplate" );
+	$.tmpl( "challengerTemplate", challenger ).appendTo( "#fightCard" );
+	$('<div/>',{class: "clear"}).appendTo('#fightCard');
     $('#monitor').html('');
+	$.colorbox({inline: true, href:'#lightbox',onClosed:stopFight});
+    play = true;
     fight();
 }         
      
 function fight(){
-$('#monitor').html('');
-    play = true;
     clearInterval ( myInterval );
+
     //roll for inititive
-    p1 = (Math.floor(Math.random()*21) * badger.initiative);
-    p2 = (Math.floor(Math.random()*21) * badger.initiative);
+    var p1 = (Math.floor(Math.random()*21) * badger.initiative);  // Badger!
+    var p2 = (Math.floor(Math.random()*21) * badger.initiative);  // Challenger!
         
     if(p1 > p2) {
         // p1 goes first, choose an attack
-        atkVal = Math.floor(Math.random() * badger.attacks.length);
-        showAttack({'player' : badger, "attack" : descriptor + badger.attacks[atkVal].name});
-        dodge = (Math.floor(Math.random()*21) * challenger.dexterity);
-        if(dodge > p1) { 
-            showAttack({'player' : challenger, "attack" : ' dodges!'});
-        } else {
-            dmg = (Math.floor(Math.random()*7) * badger.attacks[atkVal].damage);
-            challenger.hitPoints -= dmg;
-            showDamage({'player' : challenger, "damage" : dmg});
-            if(challenger.hitPoints <= 0) { play = false; endGame(challenger.name);  }
-        }
+        startAttack(badger,challenger,p1);
     } else {
         // p2 goes first, choose an attack
-        atkVal = Math.floor(Math.random() * challenger.attacks.length);
-        showAttack({'player' : challenger, "attack" : descriptor + challenger.attacks[atkVal].name});
-        dodge = (Math.floor(Math.random()*21) * badger.dexterity);
-        if(dodge > p1) { 
-            showAttack({'player' : badger, "attack" : ' dodges!'});
-        } else {
-            dmg = (Math.floor(Math.random()*7) * challenger.attacks[atkVal].damage);
-            badger.hitPoints -= dmg;
-            showDamage({'player' : badger, "damage" : dmg});
-            if(badger.hitPoints <= 0) { play = false; endGame(badger.name); }
-        }
+        startAttack(challenger,badger,p2);
     }
     if (play) myInterval = setTimeout ( fight, 1000 );
 }
-                   
-function showAttack(attacker) {
+          
+function startAttack(p1,p2,inititiveRoll) {
+	$('#monitor').append('<hr />');
+    var atkVal = Math.floor(Math.random() * p1.attacks.length);
+    showAction({'player' : p1, "attack" : " attacks with " + p1.attacks[atkVal].name});
+
+	// Player without initiave gets a chance to block/dodge
+    var miss = (Math.floor(Math.random()*21) * p2.dexterity);
+    if(miss > inititiveRoll) { 
+		// 50/50 change of block vs dodge
+		var dodge = (Math.floor(Math.random()*51));
+		if(dodge > 50 ) {
+			// DODGE!
+	        showAction({'player' : p2, "attack" : ' dodges!'});
+		} else {
+			// BLOCK!
+			var blockVal = Math.floor(Math.random() * p1.blocks.length);
+        	showAction({'player' : p2, "attack" : " blocks with " + p1.blocks[blockVal].name});
+		}
+    } else {
+        dmg = (Math.floor(Math.random()*7) * p1.attacks[atkVal].damage);
+        p2.hitPoints -= dmg;
+        showDamage({'player' : p2, "damage" : dmg});
+        if(p2.hitPoints <= 0) { play = false; endGame(p2.name); }
+    }
+}         
+function showAction(attacker) {
     var msg = '<span style="color: ' + attacker.player.color + '">' + attacker.player.name + attacker.attack + '</span><br/>';
     $('#monitor').append(msg);
+	resetScroll();
 }
-
 function showDamage(attackee) {
     var msg = '<span>' + attackee.player.name + " had taken " + attackee.damage + ' points of damage! (' + attackee.player.hitPoints + ')</span><br/>';
     $('#monitor').append(msg);
+	resetScroll();
 }
 
 function endGame(player) {
     var msg = '<span style="color: red;">' + player + ' has lost!</span><br/>';
     $('#monitor').append(msg);
+	resetScroll();
 }
 
+function resetScroll() {
+	$("#monitor").each( function() {
+	   // certain browsers have a bug such that scrollHeight is too small
+	   // when content does not fill the client area of the element
+	   var scrollHeight = Math.max(this.scrollHeight, this.clientHeight);
+	   this.scrollTop = scrollHeight - this.clientHeight;
+	});
+
+}

@@ -1,6 +1,6 @@
 //Chuck Norris
 
-function loadChuck()  {
+function chuckNorris()  {
     return {
         'name' : 'Chuck Norris',
         'strength' : 7,
@@ -14,7 +14,7 @@ function loadChuck()  {
         'initiative' : 9,
         'ability' : 10,
         'hitPoints' : 80,
-        'image' : '',
+        'image' : 'Chuck_Norris.jpeg',
         
         //
         'attacks' : [
