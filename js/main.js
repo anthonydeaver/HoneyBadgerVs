@@ -119,7 +119,7 @@ function fight(){
 function startAttack(p1,p2,inititiveRoll) {
 	$('#monitor').append('<hr />');
     var atkVal = Math.floor(Math.random() * (p1.attacks.length - 1));
-    console.log("Attack: " + atkVal);
+    //console.log("Attack: " + atkVal);
     showAction({'player' : p1, "attack" : " attacks with " + p1.attacks[atkVal].name});
 
 	// Player without initiave gets a chance to block/dodge
@@ -127,7 +127,7 @@ function startAttack(p1,p2,inititiveRoll) {
     if(miss > inititiveRoll) { 
 		// 50/50 change of block vs dodge
 		var dodge = (Math.floor(Math.random()*101));
-		console.log("dodge: " + dodge);
+		//console.log("dodge: " + dodge);
 		if(dodge > 50 ) {
 			// DODGE!
 	        showAction({'player' : p2, "attack" : ' dodges!'});
